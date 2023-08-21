@@ -1,1 +1,1 @@
-# Reto Tecnico de Automatización
+# Reto Técnico de Automatización
