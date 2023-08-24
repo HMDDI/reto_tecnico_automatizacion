@@ -1,5 +1,6 @@
 package org.proyecto.stepdefinitions;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.es.Cuando;
 import io.cucumber.java.es.Dado;
@@ -15,7 +16,9 @@ import org.proyecto.tasks.CompletarFormulario;
 import org.proyecto.tasks.IngresarFormulario;
 import org.hamcrest.Matchers;
 
-import java.util.Scanner;
+import java.util.List;
+import java.util.Map;
+
 
 
 public class MyStepdefs {
@@ -35,8 +38,11 @@ public class MyStepdefs {
     public void ingresarPaginaFormulario() {OnStage.theActorInTheSpotlight().attemptsTo(IngresarFormulario.Iformulario());}
 
     @Y("complete la información solicitada en el formulario")
-    public void completarelFormulario() {
-    OnStage.theActorInTheSpotlight().attemptsTo(CompletarFormulario.CFormulario());
+
+    public void completarelFormulario(DataTable datos) {
+        List<Map<String, String>> rows = datos.asMaps(String.class, String.class);
+        Map<String, String> datosUsuario = rows.get(0);
+        OnStage.theActorInTheSpotlight().attemptsTo(CompletarFormulario.CFormulario(datosUsuario));
         }
 
     @Entonces("Validar mensaje de bienvenida al nuevo usuario")

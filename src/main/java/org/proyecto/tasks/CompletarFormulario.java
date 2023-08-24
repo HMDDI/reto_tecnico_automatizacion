@@ -7,16 +7,18 @@ import net.serenitybdd.screenplay.actions.*;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.Keys;
 
+import java.util.Map;
+
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 import static org.proyecto.userinterface.PaginaFormulario.*;
-import static org.proyecto.utils.DatosPersonales.*;
 
 public class CompletarFormulario implements Task {
 
+    public static Map<String, String> datos_Usuario;
 
-
-    public static CompletarFormulario CFormulario() {
-        return Tasks.instrumented(CompletarFormulario.class);
+    public static CompletarFormulario CFormulario(Map<String, String> datosUsuario) {
+        datos_Usuario = datosUsuario;
+        return Tasks.instrumented(CompletarFormulario.class, datosUsuario);
     }
 
 
@@ -25,22 +27,22 @@ public class CompletarFormulario implements Task {
 
         actor.attemptsTo(
 
-                Enter.theValue(FIRST_NAME).into(INPUT_NAME),
-                Enter.theValue(LAST_NAME).into(INPUT_LASTNAME),
-                Enter.theValue(EMAIL).into(INPUT_EMAIL),
-                SelectFromOptions.byVisibleText(BIRTH_MONTH).from(SELECT_MONTH),
-                SelectFromOptions.byVisibleText(BIRTH_DAY).from(SELECT_DAY),
-                SelectFromOptions.byVisibleText(BIRTH_YEAR).from(SELECT_YEAR)
+                Enter.theValue(datos_Usuario.get("nombre")).into(INPUT_NAME),
+                Enter.theValue(datos_Usuario.get("apellido")).into(INPUT_LASTNAME),
+                Enter.theValue(datos_Usuario.get("correo")).into(INPUT_EMAIL),
+                SelectFromOptions.byVisibleText(datos_Usuario.get("mes")).from(SELECT_MONTH),
+                SelectFromOptions.byVisibleText(datos_Usuario.get("dia")).from(SELECT_DAY),
+                SelectFromOptions.byVisibleText(datos_Usuario.get("año")).from(SELECT_YEAR)
         );
 
-        actor.attemptsTo(WaitUntil.the(BTN_NEXT_LOCATION,isVisible()).forNoMoreThan(60).seconds(),Click.on(BTN_NEXT_LOCATION));
+      actor.attemptsTo(WaitUntil.the(BTN_NEXT_LOCATION,isVisible()).forNoMoreThan(60).seconds(),Click.on(BTN_NEXT_LOCATION));
 
         actor.attemptsTo(
 
-                Enter.theValue(NAME_CITY).into(INPUT_CITY),
-                Enter.theValue(POSTAL_CODE).into(INPUT_POSTAL_CODE),
+                Enter.theValue(datos_Usuario.get("ciudad")).into(INPUT_CITY),
+                Enter.theValue(datos_Usuario.get("codigo_postal")).into(INPUT_POSTAL_CODE),
                 Click.on(SELECT_COUNTRY),
-                Enter.theValue(NAME_COUNTRY).into(INPUT_COUNTRY),
+                Enter.theValue(datos_Usuario.get("pais")).into(INPUT_COUNTRY),
                 Hit.the(Keys.ENTER).into(INPUT_COUNTRY)
 
         );
@@ -51,15 +53,15 @@ public class CompletarFormulario implements Task {
 
         actor.attemptsTo(
                 Click.on(SELECT_OS),
-                Enter.theValue(TYPE_OS).into(INPUT_OS),
+                Enter.theValue(datos_Usuario.get("sistema_operativo")).into(INPUT_OS),
                 Hit.the(Keys.ENTER).into(INPUT_OS),
 
                 Click.on(SELECT_VERSION_OS),
-                Enter.theValue(VERSION_OS).into(INPUT_VERSION_OS),
+                Enter.theValue(datos_Usuario.get("version_o_s")).into(INPUT_VERSION_OS),
                 Hit.the(Keys.ENTER).into(INPUT_VERSION_OS),
 
                 Click.on(SELECT_LANGUAGE_OS),
-                Enter.theValue(LANGUAGE_OS).into(INPUT_LANGUAGE_OS),
+                Enter.theValue(datos_Usuario.get("idioma_s_o")).into(INPUT_LANGUAGE_OS),
                 Hit.the(Keys.ENTER).into(INPUT_LANGUAGE_OS)
         );
 
@@ -67,8 +69,8 @@ public class CompletarFormulario implements Task {
 
 
         actor.attemptsTo(
-                Enter.theValue(PASSWORD).into(INPUT_PASSWORD),
-                Enter.theValue(PASSWORD).into(INPUT_CONFIRM_PASSWORD),
+                Enter.theValue(datos_Usuario.get("contraseña")).into(INPUT_PASSWORD),
+                Enter.theValue(datos_Usuario.get("contraseña")).into(INPUT_CONFIRM_PASSWORD),
                 Click.on(CHECK_TERM_OF_USE),
                 Click.on(CHECK_PRIVACY_SETTING)
         );
